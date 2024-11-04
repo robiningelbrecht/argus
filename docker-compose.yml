@@ -7,3 +7,28 @@ services:
       - ./:/var/www/
     working_dir: /var/www
     profiles: [on-demand]
+  php-fpm:
+    build: docker/php-fpm
+    platform: linux/amd64
+    container_name: argus-php-fpm
+    volumes:
+      - ./:/var/www/
+    working_dir: /var/www
+    networks:
+      - argus_app
+  nginx:
+    image: nginx:stable-alpine
+    container_name: argus-nginx
+    volumes:
+      - ./public/:/var/www/public/
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8081:80"
+    depends_on:
+      - php-fpm
+    working_dir: /var/www
+    networks:
+      - argus_app
+
+networks:
+  argus_app:
