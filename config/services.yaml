@@ -41,3 +41,5 @@ services:
     App\Infrastructure\ValueObject\String\PlatformEnvironment:
         factory: [ App\Infrastructure\ValueObject\String\PlatformEnvironment, 'from' ]
         arguments: ['%env(resolve:APP_ENV)%']
+
+    League\Flysystem\FilesystemOperator: '@default.storage'

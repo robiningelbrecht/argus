@@ -2,8 +2,7 @@
 
 namespace App\Console;
 
-use HeadlessChromium\BrowserFactory;
-use HeadlessChromium\Exception\BrowserConnectionFailed;
+use App\Domain\Browser\Chromium;
 use HeadlessChromium\Page;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -11,38 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:some:test')]
-class TestRemoveCommand extends Command
+final class TestRemoveCommand extends Command
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly Chromium $chromium,
+    ) {
         parent::__construct();
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $browser = null;
-        if (file_exists('/tmp/chrome-php-demo-socket')) {
-            $socket = \file_get_contents('/tmp/chrome-php-demo-socket');
-            try {
-                $browser = BrowserFactory::connectToBrowser($socket);
-            } catch (BrowserConnectionFailed) {
-            }
-        }
-
-        if (!$browser) {
-            // The browser was probably closed, start it again
-            $browserFactory = new BrowserFactory();
-            $browserFactory->setOptions([
-                'keepAlive' => true,
-                'headless' => true,
-                'noSandbox' => true,
-            ]);
-            $browser = $browserFactory->createBrowser();
-
-            // save the uri to be able to connect again to browser
-            \file_put_contents('/tmp/chrome-php-demo-socket', $browser->getSocketUri(), LOCK_EX);
-        }
-
+        $browser = $this->chromium->createBrowser();
         $page = $browser->createPage();
         $page->getSession()->on('method:Network.responseReceived', function (array $params): void {
             var_dump($params['response']['status']);
@@ -63,7 +41,7 @@ class TestRemoveCommand extends Command
         ]);
 
         // save the screenshot
-        $screenshot->saveToFile('test.jpeg');
+        // $screenshot->saveToFile('test.jpeg');
         $page->close();
 
         return Command::SUCCESS;

@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "chrome-php/chrome": "^1.11",
+        "league/flysystem-bundle": "^3.3",
         "ramsey/uuid": "^4.7",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
