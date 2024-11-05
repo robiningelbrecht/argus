@@ -5,6 +5,7 @@ namespace App\Infrastructure\Exception;
 use App\Infrastructure\Http\HttpStatusCode;
 use App\Infrastructure\ValueObject\String\PlatformEnvironment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -23,7 +24,8 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
 
         $statusCode = match (true) {
             $exception instanceof NotFoundHttpException => HttpStatusCode::NOT_FOUND,
-            $exception instanceof \InvalidArgumentException => HttpStatusCode::BAD_REQUEST,
+            $exception instanceof \InvalidArgumentException ,
+            $exception instanceof BadRequestException => HttpStatusCode::BAD_REQUEST,
             $exception instanceof TooManyRequestsHttpException => HttpStatusCode::TOO_MANY_REQUESTS,
             default => HttpStatusCode::INTERNAL_SERVER_ERROR,
         };

@@ -13,24 +13,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final readonly class PdfPageRequestHandler implements RequestHandler
+final readonly class CapturePdfPageRequestHandler implements RequestHandler
 {
-    public function __construct(
-        private PageCapture $pageCapture,
-    ) {
-    }
 
     #[RateLimiter('capture_page')]
-    #[Route(path: '/pdf/page', methods: ['GET', 'POST'])]
+    #[Route(path: '/capture/pdf', methods: ['GET', 'POST'])]
     public function handle(Request $request): JsonResponse
     {
-        $request = new CaptureRequest($request);
-        if (!$url = $request->getUrl()) {
-            throw new BadRequestException('Parameter "url" is required.');
-        }
-
-        $capture = $this->pageCapture->screenshot($url);
-
-        return new JsonResponse([$capture]);
+        return new JsonResponse([]);
     }
 }

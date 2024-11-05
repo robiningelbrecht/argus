@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Browser;
 
-use HeadlessChromium\Browser\ProcessAwareBrowser;
+use HeadlessChromium\Browser;
 use HeadlessChromium\BrowserFactory;
 use HeadlessChromium\Exception\BrowserConnectionFailed;
 use League\Flysystem\FilesystemOperator;
@@ -18,7 +18,7 @@ final readonly class Chromium implements HeadlessBrowser
     ) {
     }
 
-    public function createBrowser(): ProcessAwareBrowser
+    public function createBrowser(): Browser
     {
         $browser = null;
         if ($this->filesystem->fileExists(self::SOCKET_FILE)) {

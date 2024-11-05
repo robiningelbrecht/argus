@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Capture;
+namespace App\Infrastructure\Http;
 
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Url;
@@ -14,12 +14,7 @@ final readonly class CaptureRequest
 
     public function __construct(
         private Request $request,
-    )
-    {
-        if ($this->request->isMethod('GET')) {
-
-        }
-
+    ) {
         $this->data = match ($this->request->getMethod()) {
             'GET' => $this->request->query->all(),
             'POST' => Json::decode($this->request->getContent()),

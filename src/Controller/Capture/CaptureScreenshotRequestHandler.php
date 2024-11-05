@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final readonly class ScreenshotPageRequestHandler implements RequestHandler
+final readonly class CaptureScreenshotRequestHandler implements RequestHandler
 {
     public function __construct(
         private PageCapture $pageCapture,
@@ -21,7 +21,7 @@ final readonly class ScreenshotPageRequestHandler implements RequestHandler
     }
 
     #[RateLimiter('capture_page')]
-    #[Route(path: '/screenshot/page', methods: ['GET', 'POST'])]
+    #[Route(path: '/capture/screenshot', methods: ['GET', 'POST'])]
     public function handle(Request $request): JsonResponse
     {
         $request = new CaptureRequest($request);
