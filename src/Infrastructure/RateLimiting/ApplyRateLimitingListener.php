@@ -46,7 +46,7 @@ final readonly class ApplyRateLimitingListener implements EventSubscriberInterfa
         if (($rateLimit = $event->getRequest()->attributes->get('rate_limit')) instanceof RateLimit) {
             $event->getResponse()->headers->add([
                 'RateLimit-Remaining' => max($rateLimit->getRemainingTokens(), 0),
-                'RateLimit-Reset' => $this->clock->getCurrentDateTimeImmutable()->getTimestamp() - $rateLimit->getRetryAfter()->getTimestamp(),
+                'X-RateLimit-Retry-After' => $rateLimit->getRetryAfter()->getTimestamp() - $this->clock->getCurrentDateTimeImmutable()->getTimestamp(),
                 'RateLimit-Limit' => $rateLimit->getLimit(),
             ]);
         }
