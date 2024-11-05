@@ -10,4 +10,5 @@ enum HttpStatusCode: int
     case UNAUTHORIZED = 401;
     case BAD_REQUEST = 400;
     case INTERNAL_SERVER_ERROR = 500;
+    case TOO_MANY_REQUESTS = 429;
 }
