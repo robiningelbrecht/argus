@@ -38,6 +38,14 @@ final readonly class Viewport
         );
     }
 
+    public static function default(): self
+    {
+        return new self(
+            width: 1920,
+            height: 1080
+        );
+    }
+
     public static function device(string $deviceName, bool $turnToLandscape): self
     {
         $deviceViewport = match ($deviceName) {

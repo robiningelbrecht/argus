@@ -29,10 +29,17 @@ final readonly class CaptureScreenshotRequestHandler implements RequestHandler
             throw new BadRequestException('Parameter "url" is required.');
         }
 
+        if ($request->captureFullPage() && $request->getClip()) {
+            throw new BadRequestException('Cannot use both fullPage and clip, they are mutually exclusive');
+        }
+
         $capture = $this->pageCapture->screenshot(
             url: $url,
             format: $request->getScreenshotFormat(),
-            quality: $request->getScreenshotQuality()
+            quality: $request->getScreenshotQuality(),
+            viewport: $request->getViewport(),
+            captureFullPage: $request->captureFullPage(),
+            clip: $request->getClip()
         );
 
         return new JsonResponse([$capture]);

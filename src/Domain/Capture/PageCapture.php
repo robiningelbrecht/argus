@@ -7,6 +7,7 @@ namespace App\Domain\Capture;
 use App\Domain\Browser\Chromium;
 use App\Infrastructure\ValueObject\String\Percentage;
 use App\Infrastructure\ValueObject\String\Url;
+use HeadlessChromium\Clip;
 use HeadlessChromium\Page;
 
 final readonly class PageCapture
@@ -22,6 +23,7 @@ final readonly class PageCapture
         Percentage $quality,
         Viewport $viewport,
         bool $captureFullPage,
+        ?Clip $clip,
     ): string {
         $browser = $this->chromium->createBrowser();
         $page = $browser->createPage();
@@ -45,6 +47,10 @@ final readonly class PageCapture
             'format' => $format->value,
             'quality' => $quality->toInt(),
         ];
+
+        if ($clip) {
+            $screenshotOptions['clip'] = $clip;
+        }
 
         if ($captureFullPage) {
             $screenshotOptions = [
