@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Screenshot\CapturePage;
+namespace App\Domain\Capture\CapturePage;
 
-use App\Domain\Screenshot\PageCapture;
+use App\Domain\Capture\PageCapture;
 use App\Infrastructure\CQRS\Bus\Command;
 use App\Infrastructure\CQRS\Bus\CommandHandler;
 

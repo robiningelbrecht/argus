@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Screenshot\CapturePage;
+namespace App\Domain\Capture\CapturePage;
 
 use App\Infrastructure\CQRS\Bus\DomainCommand;
 use App\Infrastructure\ValueObject\String\Url;

@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Domain\Screenshot\CapturePage\CapturePage;
+use App\Domain\Capture\CapturePage\CapturePage;
 use App\Infrastructure\CQRS\Bus\CommandBus;
 use App\Infrastructure\ValueObject\String\Url;
 use Symfony\Component\Console\Attribute\AsCommand;
