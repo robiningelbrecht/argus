@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final readonly class CapturePageRequestHandler
+final readonly class CapturePageRequestHandler implements RequestHandler
 {
     public function __construct(
         private PageCapture $pageCapture,
