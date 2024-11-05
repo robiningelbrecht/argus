@@ -29,6 +29,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           breadcrumbs: true,
+          routeBasePath: '/',
         },
         blog: false,
         theme: {
@@ -47,12 +48,6 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
         {
           href: 'https://github.com/robiningelbrecht/argus',
           label: 'GitHub',
