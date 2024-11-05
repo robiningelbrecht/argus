@@ -11,7 +11,7 @@ use League\Flysystem\FilesystemOperator;
 
 final readonly class Chromium implements HeadlessBrowser
 {
-    private const SOCKET_FILE = 'chromium-socket';
+    private const string SOCKET_FILE = 'chromium-socket';
 
     public function __construct(
         private FilesystemOperator $filesystem,
