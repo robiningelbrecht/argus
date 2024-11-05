@@ -20,6 +20,8 @@ final readonly class PageCapture
         Url $url,
         ScreenshotFormat $format,
         Percentage $quality,
+        Viewport $viewport,
+        bool $captureFullPage,
     ): string {
         $browser = $this->chromium->createBrowser();
         $page = $browser->createPage();
@@ -31,15 +33,28 @@ final readonly class PageCapture
             // var_dump($message);
         });
 
-        $page
-            ->navigate((string) $url)
+        $page->navigate((string) $url)
             ->waitForNavigation(Page::NETWORK_IDLE);
-        $page->setViewport(1920, 1080)->await();
 
-        $screenshot = $page->screenshot([
+        $page->setViewport(
+            width: $viewport->getWidth(),
+            height: $viewport->getHeight()
+        )->await();
+
+        $screenshotOptions = [
             'format' => $format->value,
             'quality' => $quality->toInt(),
-        ]);
+        ];
+
+        if ($captureFullPage) {
+            $screenshotOptions = [
+                ...$screenshotOptions,
+                'captureBeyondViewport' => true,
+                'clip' => $page->getFullPageClip(),
+            ];
+        }
+
+        $screenshot = $page->screenshot($screenshotOptions);
 
         $screenshotBase64 = $screenshot->getBase64();
         $page->close();

@@ -9,6 +9,12 @@
 
 ### quality
 
+### fullPage
+
+## viewport
+
+### device
+
 ## Clip
 
 
