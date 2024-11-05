@@ -31,3 +31,7 @@
 phpstan.neon
 ###< phpstan/phpstan ###
 bin/chrome-linux
+.cache
+.config
+.local
+.pki
