@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Capture;
 
 use App\Domain\Browser\Chromium;
+use App\Infrastructure\ValueObject\String\Percentage;
 use App\Infrastructure\ValueObject\String\Url;
 use HeadlessChromium\Page;
 
@@ -15,8 +16,11 @@ final readonly class PageCapture
     ) {
     }
 
-    public function screenshot(Url $url): string
-    {
+    public function screenshot(
+        Url $url,
+        ScreenshotFormat $format,
+        Percentage $quality,
+    ): string {
         $browser = $this->chromium->createBrowser();
         $page = $browser->createPage();
         $page->getSession()->on('method:Network.responseReceived', function (array $params): void {
@@ -33,8 +37,8 @@ final readonly class PageCapture
         $page->setViewport(1920, 1080)->await();
 
         $screenshot = $page->screenshot([
-            'format' => 'jpeg',  // default to 'png' - possible values: 'png', 'jpeg', 'webp'
-            'quality' => 90,      // only when format is 'jpeg' or 'webp' - default 100
+            'format' => $format->value,
+            'quality' => $quality->toInt(),
         ]);
 
         $screenshotBase64 = $screenshot->getBase64();

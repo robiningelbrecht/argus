@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Capture;
 
 use App\Controller\RequestHandler;
+use App\Domain\Capture\CaptureRequest;
 use App\Domain\Capture\PageCapture;
-use App\Infrastructure\Http\CaptureRequest;
 use App\Infrastructure\RateLimiting\RateLimiter;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +29,11 @@ final readonly class CaptureScreenshotRequestHandler implements RequestHandler
             throw new BadRequestException('Parameter "url" is required.');
         }
 
-        $capture = $this->pageCapture->screenshot($url);
+        $capture = $this->pageCapture->screenshot(
+            url: $url,
+            format: $request->getScreenshotFormat(),
+            quality: $request->getScreenshotQuality()
+        );
 
         return new JsonResponse([$capture]);
     }
