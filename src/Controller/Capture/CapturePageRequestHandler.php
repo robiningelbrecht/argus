@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Domain\Capture\PageCapture;
+use App\Infrastructure\Http\CaptureRequest;
 use App\Infrastructure\RateLimiting\RateLimiter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +19,10 @@ final readonly class CapturePageRequestHandler implements RequestHandler
     }
 
     #[RateLimiter('capture_page')]
-    #[Route(path: '/screenshot', methods: ['GET', 'POST'])]
+    #[Route(path: '/capture/page', methods: ['GET', 'POST'])]
     public function handle(Request $request): JsonResponse
     {
+        $request = new CaptureRequest();
         return new JsonResponse(['lol']);
     }
 }
