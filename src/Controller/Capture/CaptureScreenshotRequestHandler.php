@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Capture;
 
 use App\Controller\RequestHandler;
-use App\Domain\Capture\CaptureRequest;
 use App\Domain\Capture\PageCapture;
 use App\Infrastructure\RateLimiting\RateLimiter;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -24,7 +23,7 @@ final readonly class CaptureScreenshotRequestHandler implements RequestHandler
     #[Route(path: '/capture/screenshot', methods: ['GET', 'POST'])]
     public function handle(Request $request): JsonResponse
     {
-        $request = new CaptureRequest($request);
+        $request = CaptureRequest::fromRequest($request);
         if (!$url = $request->getUrl()) {
             throw new BadRequestException('Parameter "url" is required.');
         }
@@ -42,6 +41,6 @@ final readonly class CaptureScreenshotRequestHandler implements RequestHandler
             clip: $request->getClip()
         );
 
-        return new JsonResponse([$capture]);
+        return new JsonResponse([]);
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Capture;
 
-use App\Domain\Browser\Chromium;
-use App\Infrastructure\ValueObject\String\Percentage;
+use App\Infrastructure\Browser\Chromium;
+use App\Infrastructure\ValueObject\Math\Percentage;
 use App\Infrastructure\ValueObject\String\Url;
 use HeadlessChromium\Clip;
 use HeadlessChromium\Page;

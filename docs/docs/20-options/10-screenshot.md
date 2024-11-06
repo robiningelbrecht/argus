@@ -11,6 +11,8 @@
 
 ### fullPage
 
+### darkMode
+
 ## viewport
 
 ### device

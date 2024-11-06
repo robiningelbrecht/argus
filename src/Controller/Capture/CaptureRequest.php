@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Capture;
+namespace App\Controller\Capture;
 
+use App\Domain\Capture\ScreenshotFormat;
+use App\Domain\Capture\Viewport;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\String\Percentage;
+use App\Infrastructure\ValueObject\Math\Percentage;
 use App\Infrastructure\ValueObject\String\Url;
 use HeadlessChromium\Clip;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +16,18 @@ final readonly class CaptureRequest
 {
     private array $data;
 
-    public function __construct(
+    private function __construct(
         private Request $request,
     ) {
         $this->data = match ($this->request->getMethod()) {
             'GET' => $this->request->query->all(),
             'POST' => Json::decode($this->request->getContent()),
         };
+    }
+
+    public static function fromRequest(Request $request): self
+    {
+        return new self($request);
     }
 
     public function getUrl(): ?Url
@@ -38,7 +45,7 @@ final readonly class CaptureRequest
         return Percentage::fromInt($this->data['quality'] ?? 100);
     }
 
-    public function getViewport(): ViewPort
+    public function getViewport(): Viewport
     {
         if (!empty($this->data['viewport']['device'])) {
             return Viewport::device(

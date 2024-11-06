@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Browser;
+namespace App\Infrastructure\Browser;
 
 use HeadlessChromium\Browser;
 

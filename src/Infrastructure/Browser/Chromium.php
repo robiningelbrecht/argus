@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Browser;
+namespace App\Infrastructure\Browser;
 
 use HeadlessChromium\Browser;
 use HeadlessChromium\BrowserFactory;
@@ -36,6 +36,7 @@ final readonly class Chromium implements HeadlessBrowser
                 'keepAlive' => true,
                 'headless' => true,
                 'noSandbox' => true,
+                'customFlags' => ['--enable-features=WebContentsForceDark'],
             ]);
             $browser = $browserFactory->createBrowser();
 

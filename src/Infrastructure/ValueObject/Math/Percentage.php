@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\ValueObject\String;
+namespace App\Infrastructure\ValueObject\Math;
 
 final readonly class Percentage
 {
