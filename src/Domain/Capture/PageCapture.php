@@ -24,8 +24,9 @@ final readonly class PageCapture
         Viewport $viewport,
         bool $captureFullPage,
         ?Clip $clip,
+        bool $enableDarkMode,
     ): string {
-        $browser = $this->chromium->createBrowser();
+        $browser = $this->chromium->createBrowser($enableDarkMode);
         $page = $browser->createPage();
         $page->getSession()->on('method:Network.responseReceived', function (array $params): void {
             // var_dump($params['response']['status']);

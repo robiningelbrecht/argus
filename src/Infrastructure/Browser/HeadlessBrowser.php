@@ -8,5 +8,5 @@ use HeadlessChromium\Browser;
 
 interface HeadlessBrowser
 {
-    public function createBrowser(): Browser;
+    public function createBrowser(bool $enableDarkMode): Browser;
 }

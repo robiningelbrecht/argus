@@ -72,6 +72,10 @@ final readonly class CaptureRequest
         return !empty($this->data['fullPage']);
     }
 
+    public function enableDarkMode(): bool{
+        return !empty($this->data['enableDarkMode']);
+    }
+
     public function getClip(): ?Clip
     {
         if (empty($this->data['clip'])) {

@@ -38,9 +38,10 @@ final readonly class CaptureScreenshotRequestHandler implements RequestHandler
             quality: $request->getScreenshotQuality(),
             viewport: $request->getViewport(),
             captureFullPage: $request->captureFullPage(),
-            clip: $request->getClip()
+            clip: $request->getClip(),
+            enableDarkMode: $request->enableDarkMode()
         );
 
-        return new JsonResponse([]);
+        return new JsonResponse([$capture]);
     }
 }

@@ -28,7 +28,8 @@ final readonly class CapturePageCommandHandler implements CommandHandler
             quality: Percentage::fromInt(80),
             viewport: Viewport::default(),
             captureFullPage: false,
-            clip: null
+            clip: null,
+            enableDarkMode: false,
         );
     }
 }

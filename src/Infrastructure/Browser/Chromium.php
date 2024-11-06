@@ -18,9 +18,10 @@ final readonly class Chromium implements HeadlessBrowser
     ) {
     }
 
-    public function createBrowser(): Browser
+    public function createBrowser(bool $enableDarkMode): Browser
     {
         $browser = null;
+        // @TODO: Start separate browser for dark / no-dark mode.
         if ($this->filesystem->fileExists(self::SOCKET_FILE)) {
             $socket = $this->filesystem->read(self::SOCKET_FILE);
             try {
@@ -30,14 +31,17 @@ final readonly class Chromium implements HeadlessBrowser
         }
 
         if (!$browser) {
-            // The browser was probably closed, start it again
-            $browserFactory = new BrowserFactory();
-            $browserFactory->setOptions([
+            // The browser was probably closed, start it again.
+            $options = [
                 'keepAlive' => true,
                 'headless' => true,
                 'noSandbox' => true,
-                'customFlags' => ['--enable-features=WebContentsForceDark'],
-            ]);
+            ];
+            if ($enableDarkMode) {
+                $options['customFlags'] = ['--enable-features=WebContentsForceDark'];
+            }
+            $browserFactory = new BrowserFactory();
+            $browserFactory->setOptions($options);
             $browser = $browserFactory->createBrowser();
 
             $this->filesystem->write(self::SOCKET_FILE, $browser->getSocketUri());
