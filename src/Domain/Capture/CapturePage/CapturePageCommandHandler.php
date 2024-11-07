@@ -30,6 +30,7 @@ final readonly class CapturePageCommandHandler implements CommandHandler
             captureFullPage: false,
             clip: null,
             enableDarkMode: false,
+            waitForNavigation: null,
         );
     }
 }

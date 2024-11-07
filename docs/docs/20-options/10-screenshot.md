@@ -13,11 +13,19 @@
 
 ### darkMode
 
+### waitForNavigation
+
 ## viewport
 
 ### device
 
 ## Clip
+
+## selector
+
+### hideSelector
+
+## Errors
 
 
 

@@ -72,7 +72,8 @@ final readonly class CaptureRequest
         return !empty($this->data['fullPage']);
     }
 
-    public function enableDarkMode(): bool{
+    public function enableDarkMode(): bool
+    {
         return !empty($this->data['enableDarkMode']);
     }
 
@@ -99,5 +100,10 @@ final readonly class CaptureRequest
             height: $height,
             scale: (float) $this->data['clip']['scale'] ?? 1.0,
         );
+    }
+
+    public function getWaitForNavigation(): ?string
+    {
+        return $this->data['waitForNavigation'] ?? null;
     }
 }

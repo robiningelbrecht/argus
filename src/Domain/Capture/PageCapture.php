@@ -25,7 +25,16 @@ final readonly class PageCapture
         bool $captureFullPage,
         ?Clip $clip,
         bool $enableDarkMode,
+        ?string $waitForNavigation,
     ): string {
+        if ($captureFullPage && $clip) {
+            throw new \RuntimeException('Cannot use both fullPage and clip, they are mutually exclusive');
+        }
+
+        if ($waitForNavigation && !defined("HeadlessChromium\Page::{$waitForNavigation}")) {
+            throw new \RuntimeException(sprintf('Invalid value "%s" for waitForNavigation', $waitForNavigation));
+        }
+
         $browser = $this->chromium->createBrowser($enableDarkMode);
         $page = $browser->createPage();
         $page->getSession()->on('method:Network.responseReceived', function (array $params): void {
@@ -37,7 +46,7 @@ final readonly class PageCapture
         });
 
         $page->navigate((string) $url)
-            ->waitForNavigation(Page::NETWORK_IDLE);
+            ->waitForNavigation($waitForNavigation ? Page::{$waitForNavigation} : Page::LOAD);
 
         $page->setViewport(
             width: $viewport->getWidth(),
@@ -65,6 +74,7 @@ final readonly class PageCapture
 
         $screenshotBase64 = $screenshot->getBase64();
         $page->close();
+        // $browser->close();
 
         return $screenshotBase64;
     }

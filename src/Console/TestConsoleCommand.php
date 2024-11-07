@@ -22,7 +22,7 @@ final class TestConsoleCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->commandBus->dispatch(new CapturePage(
-            Url::fromString('https://docusaurus.io/docs/versioning')
+            Url::fromString('https://robiningelbrecht.be')
         ));
 
         return Command::SUCCESS;
