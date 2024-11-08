@@ -8,6 +8,8 @@ use App\Infrastructure\Browser\Chromium;
 use App\Infrastructure\ValueObject\Math\Percentage;
 use App\Infrastructure\ValueObject\String\Url;
 use HeadlessChromium\Clip;
+use HeadlessChromium\Exception\NavigationExpired;
+use HeadlessChromium\Exception\OperationTimedOut;
 use HeadlessChromium\Page;
 
 final readonly class PageCapture
@@ -45,8 +47,15 @@ final readonly class PageCapture
             // var_dump($message);
         });
 
-        $page->navigate((string) $url)
-            ->waitForNavigation($waitForNavigation ? Page::{$waitForNavigation} : Page::LOAD);
+        try {
+            $page->navigate((string) $url)
+                ->waitForNavigation($waitForNavigation ? Page::{$waitForNavigation} : Page::LOAD);
+        } catch (OperationTimedOut|NavigationExpired $e) {
+            $page->close();
+            $browser->close();
+
+            throw $e;
+        }
 
         $page->setViewport(
             width: $viewport->getWidth(),
@@ -56,6 +65,7 @@ final readonly class PageCapture
         $screenshotOptions = [
             'format' => $format->value,
             'quality' => $quality->toInt(),
+            'optimizeForSpeed' => true,
         ];
 
         if ($clip) {
@@ -66,7 +76,7 @@ final readonly class PageCapture
             $screenshotOptions = [
                 ...$screenshotOptions,
                 'captureBeyondViewport' => true,
-                'clip' => $page->getFullPageClip(),
+                'clip' => $page->getFullPageClip(1),
             ];
         }
 
@@ -74,7 +84,7 @@ final readonly class PageCapture
 
         $screenshotBase64 = $screenshot->getBase64();
         $page->close();
-        // $browser->close();
+        $browser->close();
 
         return $screenshotBase64;
     }

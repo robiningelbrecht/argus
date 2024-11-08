@@ -69,7 +69,7 @@ final readonly class CaptureRequest
 
     public function captureFullPage(): bool
     {
-        return !empty($this->data['fullPage']);
+        return !empty($this->data['captureFullPage']);
     }
 
     public function enableDarkMode(): bool
